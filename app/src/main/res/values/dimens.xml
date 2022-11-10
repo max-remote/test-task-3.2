@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_top_edt">8dp</dimen>
+    <dimen name="input_layout_width">0dp</dimen>
+    <dimen name="input_layout_margin">8dp</dimen>
+    <dimen name="input_edit_text_size">15sp</dimen>
+    <dimen name="nested_scroll_width">0dp</dimen>
+    <dimen name="nested_scroll_height">0dp</dimen>
+    <dimen name="image_view_padding">8dp</dimen>
+</resources>
