@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Task3/2</string>
+    <string name="app_name">MaximgTask3/2</string>
     <string name="toast_message_null">Check that u entered smthng, and ur internet is on</string>
     <string name="toast_message_incorrect">"Incorrect link entered"</string>
     <string name="hint_input_layout">Input your img link and press search button or enter</string>
