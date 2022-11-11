@@ -1,7 +1,9 @@
 package com.maks.testtask3_2.ui;
 
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
@@ -9,16 +11,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.maks.testtask3_2.R;
 import com.maks.testtask3_2.databinding.ActivityMainBinding;
-import com.squareup.picasso.Picasso;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
     private final Picture picture = new Picture();
-    private final Handler handler = new Handler();
     private ActivityMainBinding binding;
     private String url;
     private ImageView image;
-    static final long DELAY_TIME = 2000L;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,37 +54,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /**
-         * Загружает картинку и делает проверку try catch на ввод(null)
+         * Загружает картинку через работу с Bitmap. Загрузка по URL во вспомогательном потоке,
+         * отрисовка в главном
          */
         private void loadPicture() {
-            String messageWhenNull = MainActivity.this.getString(R.string.toast_message_null);
-            String messageWhenIncorrect = MainActivity.this.getString(R.string.toast_message_incorrect);
-
+            String messageWhenNull = MainActivity.this.getString(R.string.toast_message);
             url = binding.inputEditText.getText().toString();
             image = binding.pictureImageView;
-            try {
-                Picasso.get().load(url).into(image);
-                checkRightLink(messageWhenIncorrect);
-            } catch (Exception e) {
-                doToast(messageWhenNull);
-            }
-        }
 
-        /**
-         * Этот метод проверят загрузилась ли картинка в imageView или нет:
-         * если в течении DELAY_TIME загрузка не произошла (по причине неправильной ссылки, опечатки,
-         * неверного ввода и тд), выбросится toastMessage.
-         *
-         * @param toastMessage сообщение, которое выбросится, если картинка не загрузится
-         */
-        private void checkRightLink(String toastMessage) {
-            handler.postDelayed(() -> {
-                if (image.getDrawable() == null) {
-                    doToast(toastMessage);
-                } else {
-                    Picasso.get().load(url).into(image);
+            new Thread(() -> {
+                try {
+                    bitmap = BitmapFactory.decodeStream(new URL(url).openConnection().getInputStream());
+                    runOnUiThread(() -> image.setImageBitmap(bitmap));
+                } catch (Exception e) {
+                    runOnUiThread(() -> doToast(messageWhenNull));
                 }
-            }, DELAY_TIME);
+            }).start();
         }
 
         private void doToast(String message) {
