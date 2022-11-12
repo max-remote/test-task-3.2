@@ -7,6 +7,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import com.maks.testtask3_2.R;
 import com.maks.testtask3_2.databinding.ActivityMainBinding;
 import com.squareup.picasso.Picasso;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private String url;
     private ImageView image;
+    private MainViewModel mainViewModel;
     static final long DELAY_TIME = 2000L;
 
     @Override
@@ -25,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        if (mainViewModel.getImage() != null) {
+            binding.pictureImageView.setImageDrawable(mainViewModel.getImage());
+        }
 
         picture.loadPictureBySearchButton();
         picture.loadPictureByVirtualEnterKey();
@@ -91,5 +99,11 @@ public class MainActivity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
             toast.show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainViewModel.setImage(binding.pictureImageView.getDrawable());
     }
 }
