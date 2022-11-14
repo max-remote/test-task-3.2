@@ -15,4 +15,3 @@ public class MainViewModel extends ViewModel {
         this.image = image;
     }
 }
-
