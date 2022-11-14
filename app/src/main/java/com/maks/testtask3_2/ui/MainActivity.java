@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private MainViewModel mainViewModel;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
